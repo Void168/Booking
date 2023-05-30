@@ -1,22 +1,27 @@
-import Navbar from './components/navbar/Navbar'
-import './globals.css'
-import { Nunito } from 'next/font/google'
+import Modal from "./components/modals/Modal";
+import Navbar from "./components/navbar/Navbar";
+import "./globals.css";
+import { Nunito } from "next/font/google";
 
-const font = Nunito({ subsets: ['latin'] })
+const font = Nunito({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'Traveller',
-  description: 'Booking App',
-}
+  title: "Traveller",
+  description: "Booking App",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={font.className}><Navbar />{children}</body>
+      <body className={font.className}>
+        <Modal isOpen/>
+        <Navbar />
+        {children}
+      </body>
     </html>
-  )
+  );
 }
