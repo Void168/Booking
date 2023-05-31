@@ -31,8 +31,8 @@ const UserMenu = () => {
         </div>
       </div>
       {isOpen && (
-        <div className="absolute rounded-xl shadow-md w-[40vvw] md:w-3/4 bg-light-blue overflow-hidden right-0 top-12 text-sm">
-          <div className="flex flex-col cursor-pointer">
+        <div className="absolute rounded-xl shadow-md w-[40vvw] md:w-3/4 bg-light-blue overflow-hidden right-0 top-12 text-sm transition ease-in-out duration-300">
+          <div className="flex flex-col cursor-pointer transition ease-in-out duration-300">
             <>
               <MenuItem onClick={() => {}} label="Đăng nhập" />
               <MenuItem onClick={registerModal.onOpen} label="Đăng ký" />
