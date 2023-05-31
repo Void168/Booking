@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+
 import Button from "../Button";
 
 interface ModalProps {
   isOpen?: boolean;
-  onClose?: () => void;
-  onSubmit?: () => void;
+  onClose: () => void;
+  onSubmit: () => void;
   title?: string;
   body?: React.ReactElement;
   footer?: React.ReactElement;
@@ -23,8 +24,8 @@ const Modal: React.FC<ModalProps> = ({
   onSubmit,
   title,
   body,
-  footer,
   actionLabel,
+  footer,
   disabled,
   secondaryAction,
   secondaryActionLabel,
@@ -39,21 +40,20 @@ const Modal: React.FC<ModalProps> = ({
     if (disabled) {
       return;
     }
+
     setShowModal(false);
     setTimeout(() => {
       onClose();
     }, 300);
-  }, [disabled, onClose]);
+  }, [onClose, disabled]);
 
   const handleSubmit = useCallback(() => {
     if (disabled) {
       return;
     }
-    setShowModal(false);
-    setTimeout(() => {
-      onSubmit();
-    }, 300);
-  }, [disabled, onSubmit]);
+
+    onSubmit();
+  }, [onSubmit, disabled]);
 
   const handleSecondaryAction = useCallback(() => {
     if (disabled || !secondaryAction) {
@@ -61,20 +61,24 @@ const Modal: React.FC<ModalProps> = ({
     }
 
     secondaryAction();
-  }, [disabled, secondaryAction]);
+  }, [secondaryAction, disabled]);
 
   if (!isOpen) {
     return null;
   }
 
   return (
-    <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[10000] outline-none focus:outline-none bg-[#262626] opacity-70">
+    <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[60] outline-none focus:outline-none bg-[#262626] opacity-70">
       <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto">
         {/* Content */}
         <div
-          className={`translate duration-300 h-full ${
-            showModal ? "translate-y-0" : "translate-y-full"
-          } ${showModal ? "opacity-100" : "opacity-0"}`}
+          className={`
+            translate
+            duration-300
+            h-full
+            ${showModal ? "translate-y-0" : "translate-y-full"}
+            ${showModal ? "opacity-100" : "opacity-0"}
+          `}
         >
           <div className="translate h-full lg:h-auto md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-[#fff] outline-none focus:outline-none">
             {/* Header */}
@@ -96,15 +100,15 @@ const Modal: React.FC<ModalProps> = ({
                 {secondaryAction && secondaryActionLabel && (
                   <Button
                     disabled={disabled}
-                    onClick={handleSubmit}
                     label={secondaryActionLabel}
+                    onClick={handleSecondaryAction}
+                    outline
                   />
                 )}
-
                 <Button
                   disabled={disabled}
-                  onClick={handleSubmit}
                   label={actionLabel}
+                  onClick={handleSubmit}
                 />
               </div>
               {footer}
