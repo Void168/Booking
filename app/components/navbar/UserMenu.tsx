@@ -5,9 +5,17 @@ import Avatar from "../Avatar";
 import { useCallback, useState } from "react";
 import MenuItem from "./MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
+import useLoginModal from "@/app/hooks/useLoginModal";
+import { User } from "@prisma/client";
+import { signOut } from "next-auth/react";
 
-const UserMenu = () => {
-  const registerModal = useRegisterModal()
+interface UserMenuProps {
+  currentUser?: User | null;
+}
+
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
+  const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
@@ -33,10 +41,21 @@ const UserMenu = () => {
       {isOpen && (
         <div className="absolute rounded-xl shadow-md w-[40vvw] md:w-3/4 bg-light-blue overflow-hidden right-0 top-12 text-sm transition ease-in-out duration-300">
           <div className="flex flex-col cursor-pointer transition ease-in-out duration-300">
-            <>
-              <MenuItem onClick={() => {}} label="Đăng nhập" />
-              <MenuItem onClick={registerModal.onOpen} label="Đăng ký" />
-            </>
+            {currentUser ? (
+              <>
+                <MenuItem onClick={() => {}} label="Chuyến đi" />
+                <MenuItem onClick={() => {}} label="Yêu thích" />
+                <MenuItem onClick={() => {}} label="Đặt chỗ" />
+                <MenuItem onClick={() => {}} label="Thông tin" />
+                <MenuItem onClick={() => {}} label="Traveller của tôi" />
+                <MenuItem onClick={() => signOut()} label="Đăng xuất" />
+              </>
+            ) : (
+              <>
+                <MenuItem onClick={loginModal.onOpen} label="Đăng nhập" />
+                <MenuItem onClick={registerModal.onOpen} label="Đăng ký" />
+              </>
+            )}
           </div>
         </div>
       )}
