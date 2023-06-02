@@ -56,8 +56,9 @@ const LoginModal = () => {
   };
 
   const onToggle = useCallback(() => {
-    registerModal.onClose();
-  }, [registerModal]);
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [registerModal, loginModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -109,7 +110,7 @@ const LoginModal = () => {
         "
       >
         <p>
-          Bạn đã có tài khoản?
+          Chưa có tài khoản Traveller?
           <span
             onClick={onToggle}
             className="
@@ -119,7 +120,7 @@ const LoginModal = () => {
             "
           >
             {" "}
-            Đăng nhập
+            Đăng ký ngay
           </span>
         </p>
       </div>
