@@ -10,6 +10,7 @@ import CategoryInput from "../inputs/CategoryInput";
 import { FieldValues, useForm } from "react-hook-form";
 import CountrySelect from "../inputs/CountrySelect";
 import dynamic from "next/dynamic";
+import Counter from "../inputs/Counter";
 
 enum STEPS {
   CATEGORY = 0,
@@ -24,37 +25,47 @@ const RentModal = () => {
   const [step, setStep] = useState(STEPS.CATEGORY);
 
   const {
-    register, handleSubmit, setValue, watch, formState: {
-      errors,
-    }, reset
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+    reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      category: '',
+      category: "",
       location: null,
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
-      imageSrc: '',
+      imageSrc: "",
       price: 1,
-      title: '',
-      description: '',
-    }
-  })
+      title: "",
+      description: "",
+    },
+  });
 
-  const category = watch('category')
+  const category = watch("category");
   const location = watch("location");
+  const guestCount = watch("guestCount");
+  const roomCount = watch("roomCount");
+    const bathroomCount = watch("bathroomCount");
 
-  const Map = useMemo(() => dynamic(() => import('../Map'), { 
-    ssr: false 
-  }), [location]);
+  const Map = useMemo(
+    () =>
+      dynamic(() => import("../Map"), {
+        ssr: false,
+      }),
+    [location]
+  );
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
-    })
-  }
+    });
+  };
 
   const onBack = () => {
     setStep((val) => val - 1);
@@ -91,7 +102,7 @@ const RentModal = () => {
         {categories.map((item) => (
           <div className="col-span-1" key={item.label}>
             <CategoryInput
-              onClick={(category) => setCustomValue('category', category)}
+              onClick={(category) => setCustomValue("category", category)}
               selected={category === item.label}
               label={item.label}
               icon={item.icon}
@@ -105,11 +116,45 @@ const RentModal = () => {
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Heading title="Nơi ở của bạn" subtitle="Giúp khách thấy bạn" />
-        <CountrySelect onChange={(value) => setCustomValue('location', value)} value={location} />
-        <Map center={location?.latLng}/>
+        <Heading title="Nơi ở của bạn" subtitle="Giúp khách tìm thấy bạn" />
+        <CountrySelect
+          onChange={(value) => setCustomValue("location", value)}
+          value={location}
+        />
+        <Map center={location?.latLng} />
       </div>
-    )
+    );
+  }
+
+  if (step === STEPS.INFO) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Chia sẻ cho chúng tôi một số điều về nơi ấy"
+          subtitle="Hiện đại & Tiện nghi/Truyền thống & Cổ kính?"
+        />
+        <Counter
+          title="Số lượng khách"
+          subtitle="Nơi ở phục vụ được bao nhiêu người"
+          value={guestCount}
+          onChange={(value) => setCustomValue("guestCount", value)}
+        />
+        <hr />
+        <Counter
+          title="Số lượng phòng"
+          subtitle="Nơi ở có bao nhiêu phòng?"
+          value={roomCount}
+          onChange={(value) => setCustomValue("roomCount", value)}
+        />
+        <hr />
+        <Counter
+          title="Số lượng phòng tắm"
+          subtitle="Nơi ở có bao nhiêu phòng khách"
+          value={bathroomCount}
+          onChange={(value) => setCustomValue("bathroomCount", value)}
+        />
+      </div>
+    );
   }
 
   return (
