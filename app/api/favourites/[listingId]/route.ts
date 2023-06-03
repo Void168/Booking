@@ -7,7 +7,7 @@ interface IParams {
   listingId?: string;
 }
 
-export default async function POST(
+export async function POST(
   request: Request,
   { params }: { params: IParams }
 ) {
@@ -24,6 +24,8 @@ export default async function POST(
     }
 
     let favouriteIds = [...(currentUser.favouriteIds || [])];
+
+    favouriteIds.push(listingId);
 
     const user = await prisma.user.update({
         where: {
@@ -50,15 +52,21 @@ export async function DELETE(
   const { listingId } = params;
 
   if (!listingId || typeof listingId !== "string") {
-    throw new Error("Invalid ID");
+    throw new Error("ID không hợp lệ");
   }
 
-  const listing = await prisma.listing.deleteMany({
+  let favouriteIds = [...(currentUser.favouriteIds || [])];
+
+  favouriteIds = favouriteIds.filter((id) => id !== listingId);
+
+  const user = await prisma.user.update({
     where: {
-      id: listingId,
-      userId: currentUser.id,
+      id: currentUser.id,
+    },
+    data: {
+      favouriteIds,
     },
   });
 
-  return NextResponse.json(listing);
+  return NextResponse.json(user);
 }
