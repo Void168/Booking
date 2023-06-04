@@ -41,14 +41,13 @@ const useFavourite = ({ listingId, currentUser }: IUseFavourite) => {
         }
 
         await request();
-          router.refresh();
-          
+        router.refresh();
+
         if (!hasFavourited) {
           toast.success("Đã thêm vào danh sách yêu thích");
         } else {
-            toast.success("Đã xóa khỏi danh sách yêu thích");
-          }
-          
+          toast.success("Đã xóa khỏi danh sách yêu thích");
+        }
       } catch (error) {
         toast.error("Có gì đó sai");
       }
