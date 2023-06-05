@@ -6,7 +6,7 @@ interface IParams {
   authorId?: string;
 }
 
-export default async function getReservation(params: IParams) {
+export default async function getReservations(params: IParams) {
   try {
     const { listingId, userId, authorId } = params;
 
