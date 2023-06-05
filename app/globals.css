@@ -15,6 +15,15 @@ body,
   z-index: 0 !important;
 }
 
+.rdrMonth {
+  width: 100$ !important;
+}
+
+.rdrCalendarWrapper {
+  width: 100% !important;
+  font-size: 16px !important;
+}
+
 .go4109123758 {
   @apply z-[10000000];
 }
