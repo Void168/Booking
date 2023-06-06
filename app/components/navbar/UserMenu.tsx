@@ -61,11 +61,20 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           <div className="flex flex-col cursor-pointer transition ease-in-out duration-300">
             {currentUser ? (
               <>
-                <MenuItem onClick={() => router.push('/trips')} label="Chuyến đi" />
+                <MenuItem
+                  onClick={() => router.push("/trips")}
+                  label="Chuyến đi"
+                />
                 <MenuItem onClick={() => {}} label="Yêu thích" />
-                <MenuItem onClick={() => {}} label="Đặt chỗ" />
+                <MenuItem
+                  onClick={() => router.push("/reservations")}
+                  label="Bài đăng của tôi"
+                />
                 <MenuItem onClick={() => {}} label="Thông tin" />
-                <MenuItem onClick={rentModal.onOpen} label="Traveller của tôi" />
+                <MenuItem
+                  onClick={rentModal.onOpen}
+                  label="Traveller của tôi"
+                />
                 <MenuItem onClick={() => signOut()} label="Đăng xuất" />
               </>
             ) : (
