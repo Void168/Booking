@@ -16,14 +16,13 @@ import ListingInfo from "@/app/components/listings/ListingInfo";
 
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
 import { toast } from "react-hot-toast";
-import {Range} from 'react-date-range'
+import { Range } from "react-date-range";
 
 const initialDateRange = {
   startDate: new Date(),
   endDate: new Date(),
   key: "selection",
 };
-
 interface ListingClientProps {
   reservations?: SafeReservation[];
   listing: SafeListing & {
@@ -40,7 +39,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const loginModal = useLoginModal();
   const router = useRouter();
 
-  const disableDates = useMemo(() => {
+  const disabledDates = useMemo(() => {
     let dates: Date[] = [];
 
     reservations.forEach((reservation: any) => {
@@ -55,6 +54,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
     return dates;
   }, [reservations]);
 
+  const category = useMemo(() => {
+    return categories.find((item) => item.label === listing.category);
+  }, [listing.category]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
@@ -63,20 +66,19 @@ const ListingClient: React.FC<ListingClientProps> = ({
     if (!currentUser) {
       return loginModal.onOpen();
     }
-
     setIsLoading(true);
 
     axios
-      .post("api/reservations", {
+      .post("/api/reservations", {
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
         listingId: listing?.id,
       })
       .then(() => {
-        toast.success("Đã đặt lịch");
+        toast.success("Đã đặt lịch!");
         setDateRange(initialDateRange);
-        router.refresh();
+        router.push("/trips");
       })
       .catch(() => {
         toast.error("Có gì đó sai, hãy kiểm tra lại");
@@ -84,15 +86,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       .finally(() => {
         setIsLoading(false);
       });
-  }, [
-    currentUser,
-    dateRange.endDate,
-    dateRange.startDate,
-    listing?.id,
-    loginModal,
-    router,
-    totalPrice,
-  ]);
+  }, [totalPrice, dateRange, listing?.id, router, currentUser, loginModal]);
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
@@ -109,9 +103,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
     }
   }, [dateRange.endDate, dateRange.startDate, listing.price]);
 
-  const category = useMemo(() => {
-    return categories.find((item) => item.label === listing.category);
-  }, [listing.category]);
   return (
     <Container>
       <div className="max-w-screen-lg mx-auto">
@@ -141,7 +132,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 dateRange={dateRange}
                 onSubmit={onCreateReservation}
                 disabled={isLoading}
-                disabledDates={disableDates}
+                disabledDates={disabledDates}
               />
             </div>
           </div>
