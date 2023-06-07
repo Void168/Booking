@@ -12,6 +12,8 @@ import qs from "query-string";
 import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
 import { formatISO } from "date-fns";
 import Heading from "../Heading";
+import Calendar from "../inputs/Calendar";
+import Counter from "../inputs/Counter";
 
 enum STEPS {
   LOCATION = 0,
@@ -28,7 +30,7 @@ const SearchModal = () => {
   const [step, setStep] = useState(STEPS.LOCATION);
   const [guestCount, setGuestCount] = useState(1);
   const [roomCount, setRoomCount] = useState(1);
-  const [bathroomCount, setbathroomCount] = useState(1);
+  const [bathroomCount, setBathroomCount] = useState(1);
   const [dateRange, setDateRange] = useState<Range>({
     startDate: new Date(),
     endDate: new Date(),
@@ -133,15 +135,66 @@ const SearchModal = () => {
       <hr />
       <Map center={location?.latLng} />
     </div>
-  );
+    );
+    
+    if (step === STEPS.DATE) {
+      bodyContent = (
+        <div className="flex flex-col gap-8">
+          <Heading
+            title="Khi nào bạn muốn đi đến nơi này?"
+            subtitle="Hãy chắc chắn rằng mọi người đồng hành đều rảnh rỗi!"
+          />
+          <Calendar
+            onChange={(value) => setDateRange(value.selection)}
+            value={dateRange}
+          />
+        </div>
+      );
+    }
+
+    if (step === STEPS.INFO) {
+      bodyContent = (
+        <div className="flex flex-col gap-8">
+          <Heading
+            title="Thêm thông tin"
+            subtitle="Tìm địa điểm hoàn hảo của bạn!"
+          />
+          <Counter
+            onChange={(value) => setGuestCount(value)}
+            value={guestCount}
+            title="Số lượng khách"
+            subtitle="Bạn có tất cả bao nhiêu người?"
+          />
+          <hr />
+          <Counter
+            onChange={(value) => setRoomCount(value)}
+            value={roomCount}
+            title="Số lượng phòng"
+            subtitle="Bạn cần bao nhiêu phòng?"
+          />
+          <hr />
+          <Counter
+            onChange={(value) => {
+              setBathroomCount(value);
+            }}
+            value={bathroomCount}
+            title="Số lượng phòng tắm"
+            subtitle="Bạn cần bao nhiêu phòng tắm?"
+          />
+        </div>
+      );
+    }
+
 
   return (
     <Modal
       isOpen={searchModal.isOpen}
+      title="Bộ lọc"
+      actionLabel={actionLabel}
+      onSubmit={onSubmit}
+      secondaryActionLabel={secondaryActionLabel}
+      secondaryAction={step === STEPS.LOCATION ? undefined : onBack}
       onClose={searchModal.onClose}
-      onSubmit={searchModal.onOpen}
-      title="Bộ Lọc"
-      actionLabel="Tìm kiếm"
       body={bodyContent}
     />
   );
