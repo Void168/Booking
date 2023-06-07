@@ -91,7 +91,7 @@ const SearchModal = () => {
     setStep(STEPS.LOCATION);
     searchModal.onClose();
 
-    router.push("url");
+    router.push(url);
   }, [
     bathroomCount,
     guestCount,
