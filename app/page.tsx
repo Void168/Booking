@@ -17,6 +17,9 @@ const Home = async ({ searchParams }: HomeProps) => {
   if (listings.length === 0) {
     return <EmptyState showReset />;
   }
+
+  throw new Error('Có gì đó sai sai')
+
   return (
     <Container>
       <div className="pt-28 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
