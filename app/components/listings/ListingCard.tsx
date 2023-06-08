@@ -80,7 +80,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             fill
             alt="listing"
             src={data.imageSrc}
-            className="object-cover h-full w-full group-hover:scale-110 transition"
+            className="object-cover h-full w-full group-hover:scale-110 transition ease-in-out duration-300 shadow-lg"
           />
           <div className="absolute top-3 right-3">
             <HeartButton listingId={data.id} currentUser={currentUser} />

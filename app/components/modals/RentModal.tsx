@@ -125,8 +125,8 @@ const RentModal = () => {
   let bodyContent = (
     <div>
       <Heading
-        title="Đâu là những nơi bạn muốn đến nhất?"
-        subtitle="Hãy chọn theo sở thích của bạn"
+        title="Bạn muốn cho khách du lịch thuê địa điểm nào?"
+        subtitle="Hãy chọn theo đúng nơi của bạn"
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto">
         {categories.map((item) => (
