@@ -5,8 +5,8 @@ import { SafeUser } from "../types";
 import useFavourite from "../hooks/useFavourite";
 
 interface HeartButtonProps {
-    listingId: string;
-    currentUser: SafeUser | null;
+  listingId: string;
+  currentUser?: SafeUser | null;
 }
 
 const HeartButton: React.FC<HeartButtonProps> = ({
